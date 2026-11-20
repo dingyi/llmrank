@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Fast, idempotent wake-up check. No installs, no service restarts:
+# .amp/services.yaml owns the dev server lifecycle.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+if [ ! -d node_modules ]; then
+  echo "node_modules missing; run .agents/setup" >&2
+  exit 1
+fi
+if [ ! -f public/data/models.json ]; then
+  echo "public/data/models.json missing; run node scripts/update-data.mjs" >&2
+  exit 1
+fi
+echo "llmrank ready"

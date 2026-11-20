@@ -1,4 +1,5 @@
 node_modules/
 .wrangler/
-.amp/
+.amp/*
+!.amp/services.yaml
 .dev.vars

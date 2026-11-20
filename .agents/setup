@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Prepares a fresh orb for llmrank: a static site with a Node data-refresh
+# script and wrangler for deploys. Node.js and Python 3 ship with the orb
+# base template, so setup only verifies them and installs npm dependencies.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+step() { printf '\n==> %s\n' "$1"; }
+t0=$SECONDS
+
+step "Check toolchain"
+command -v node >/dev/null || { echo "node is missing" >&2; exit 1; }
+command -v python3 >/dev/null || { echo "python3 is missing" >&2; exit 1; }
+node_major=$(node -p 'process.versions.node.split(".")[0]')
+if [ "$node_major" -lt 20 ]; then
+  echo "node >= 20 required (wrangler), found $(node --version)" >&2
+  exit 1
+fi
+echo "node $(node --version), npm $(npm --version), $(python3 --version)"
+
+step "Install npm dependencies (wrangler) from lockfile"
+npm ci --no-audit --no-fund
+
+step "Sanity-check data refresh script syntax"
+node --check scripts/update-data.mjs
+
+printf '\n==> setup done in %ss\n' "$((SECONDS - t0))"

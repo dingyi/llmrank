@@ -1,0 +1,7 @@
+services:
+  llmrank:
+    command: python3 -m http.server "$PORT" --directory public
+    health: /
+    portal:
+      title: llmrank
+      description: Static benchmark table. Refresh data with node scripts/update-data.mjs, then restart the service.
