@@ -1,0 +1,15 @@
+{
+  "name": "llmrank",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI model benchmark comparison — intelligence, cost and speed across 280+ models. Data from Artificial Analysis.",
+  "type": "module",
+  "scripts": {
+    "update-data": "node scripts/update-data.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}
